@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Privacy · CityLore</title>
+<meta name="description" content="How CityLore handles your data: the phone app, the web editor at app.citylore.app and AI drafts.">
+<style>
+  :root { color-scheme: dark; }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: #0F0F13; color: #F5F3EF;
+    font: 17px/1.6 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    padding: 48px 24px 32px;
+  }
+  main { max-width: 680px; margin: 0 auto; width: 100%; }
+  .mark { font-weight: 800; font-size: 28px; letter-spacing: -0.5px; margin: 0 0 40px; }
+  .mark a { color: inherit; text-decoration: none; }
+  .dot { display: inline-block; width: 9px; height: 9px; border-radius: 50%; background: #FF8A3D; margin-left: 4px; }
+  h1 { font-size: clamp(32px, 7vw, 44px); line-height: 1.08; letter-spacing: -1px; margin: 0 0 16px; }
+  h2 { font-size: 21px; line-height: 1.3; margin: 36px 0 10px; }
+  p, li { color: #D9D7E0; }
+  p { margin: 0 0 14px; }
+  ul { margin: 0 0 14px; padding-left: 22px; }
+  li { margin: 0 0 6px; }
+  .lead { color: #A9A7B3; }
+  hr { border: 0; border-top: 1px solid #34343F; margin: 56px 0; }
+  footer { max-width: 680px; margin: 48px auto 0; width: 100%; font-size: 14px; color: #A9A7B3; }
+  a { color: #C9C0FF; }
+  a:hover { color: #FFFFFF; }
+</style>
+</head>
+<body>
+<main>
+  <p class="mark"><a href="/">citylore<span class="dot" aria-hidden="true"></span></a></p>
+
+  <h1>Privacy</h1>
+  <p class="lead">For the CityLore app on iPhone and Android, the web editor at app.citylore.app and this website. <a href="#de">Deutsche Fassung weiter unten.</a></p>
+
+  <h2>Who is responsible</h2>
+  <p>Birdsong Apps GmbH<br>Wilhelmine-Gemberg-Weg 12<br>10179 Berlin, Germany<br>Represented by Sebastian Vogelsang, Managing Director<br>Email: <a href="mailto:hi@birdsongapps.com">hi@birdsongapps.com</a><br>Phone: +49 152 33925947</p>
+  <p>We have not appointed a data protection officer; the law does not require one for a company of our size.</p>
+
+  <h2>The short version</h2>
+  <ul>
+    <li>Your tours, ratings and posts live in your own account on the open social web (ATProto), at the server that hosts your account, not with us.</li>
+    <li>Your position stays on your phone. The app uses it to show tours near you and to notice when you reach a stop; it doesn't send it to us.</li>
+    <li>No advertising, no analytics, no tracking, no cookies.</li>
+    <li>When you draft a tour with AI, your start point, your story idea and your choices go to our server and from there to Anthropic's Claude. Our server forgets them an hour after the draft is done.</li>
+  </ul>
+
+  <h2>Your account</h2>
+  <p>You sign in with an account on Bluesky or another ATProto app. You sign in at the server that hosts your account; we never see your password. To find that server and to show your name and picture, the app looks up your handle and public profile at Eurosky's AppView (api.eurosky.network).</p>
+  <p>After you sign in, the app keeps a sign-in key on your phone or in your browser and uses it to read and write your CityLore records in your account. On the web, our server at app.citylore.app also signs a short proof that the sign-in request really comes from CityLore. That proof contains nothing from your account.</p>
+
+  <h2>Your tours, ratings and posts</h2>
+  <p>Tours you make are stored in your account. A private tour is kept in a private area of your account that only you can open. A tour you share is readable by the people you invite. A public tour is public on the open network: anyone can find and walk it, in any app, and copies others made may remain if you later make it private or delete it.</p>
+  <p>Ratings, posts and "I was here" pins are written to your account only when you choose to, and they are public, like posts on Bluesky. The server that hosts your account, and its operator, are responsible for your account; to delete it, use that service.</p>
+
+  <h2>Location</h2>
+  <p>With your permission, the phone app uses your position to show tours near you, to guide you along a walk and to notice when you arrive at a stop. On iPhone you can also allow location "Always": the phone then watches only for your next two stops, so arrivals work with the screen locked. All of this happens on your phone; your position is not sent to us.</p>
+  <p>On the web, "Use my location" in "Plan a walk" sends your position once to Eurosky's places service, which answers with the name of the area. Searching for places in the editor sends what you type and the middle of the map to the same service.</p>
+
+  <h2>Maps</h2>
+  <p>Maps come from OpenFreeMap (tiles.openfreemap.org), a free map service based on OpenStreetMap. To show the map, your phone or browser loads map tiles from it directly, so OpenFreeMap receives your IP address and which map area you look at. Maps you download for offline use are stored on your phone.</p>
+
+  <h2>Drafting a tour with AI</h2>
+  <p>"Plan a walk" in the web editor sends your start point, the time, where the walk should end, the guide style, your story idea, the ways to play and the language to our server at app.citylore.app, together with a short-lived token from your account's server that tells us which account asks. To check that token, our server looks up your account's public key in the PLC directory (plc.directory) or on your account's own domain.</p>
+  <p>Our server then asks Eurosky's places service for places around the start, reads about them on Wikipedia and Wikidata (these requests contain nothing about you), and sends your choices and story idea, the start point and the places to Claude, an AI model by Anthropic PBC in the USA, which writes the draft. Anthropic processes this on our behalf under its commercial terms and data processing addendum, which provide for the transfer to the USA under the EU standard contractual clauses; it does not use the data to train its models.</p>
+  <p>Our server keeps a draft in memory only until an hour after it's done, then forgets it. The draft itself is saved privately in your account.</p>
+  <p>To count each account's free story generations and to keep what drafts cost us within a monthly budget, our server writes a line for every call to Claude and for every delivered draft: your account's identifier (DID), the time, the model, the amount of text processed and the cost. These lines contain nothing about the tour itself. We keep them as long as we need them to count free generations and for our accounts.</p>
+  <p>The legal basis for all of this is Article 6(1)(b) GDPR, providing the service you asked for, and for the counting also Article 6(1)(f) GDPR, our interest in keeping free drafting fair and affordable.</p>
+
+  <h2>Stored on your device</h2>
+  <p>The app and the web editor store on your device what they need to work: your sign-in, tours you downloaded with their spoken stories, your progress on a walk, unsaved editor drafts, the claims the AI made that you still want to check, and your settings. This stays on your device and is necessary for the functions you use (Section 25(2) TDDDG). Stories are read aloud by your phone's own voices, on the device.</p>
+
+  <h2>Hosting and server logs</h2>
+  <p>app.citylore.app, its sign-in helper and the drafting server run on a server we rent from Contabo GmbH, Aschauer Straße 32a, 81549 Munich, Germany, in a data centre in Germany, under a data processing agreement as required by Article 28 GDPR. This website, citylore.app, is served by GitHub Pages, run by GitHub, Inc. in the USA; GitHub receives your IP address when you open it.</p>
+  <p>When you open a page or use the drafting server, the server may record the request in a log: your IP address, the date and time, what was requested and whether it succeeded. We need this to keep the service running and secure (Article 6(1)(f) GDPR). We keep these logs for at most 14 days and don't use them to identify you.</p>
+
+  <h2>Test versions</h2>
+  <p>If you test a preview of CityLore through Apple's TestFlight or Google Play's testing programme, Apple or Google pass on to us what their terms allow: for example your name and email address if we invited you by email, your device and system version, crash reports and the feedback you send. We use this only to fix and improve CityLore.</p>
+
+  <h2>No advertising, no tracking</h2>
+  <p>CityLore shows no ads, uses no analytics or tracking services and sets no cookies. We don't sell or share your data with anyone for their own purposes.</p>
+
+  <h2>Your rights</h2>
+  <p>You have the right to obtain information about the personal data we hold about you (Article 15 GDPR), to have it corrected (Article 16), deleted (Article 17) or its processing restricted (Article 18), to receive it in a portable format (Article 20), and to object to processing based on our legitimate interest (Article 21). Where processing is based on your consent, you can withdraw it at any time with effect for the future (Article 7(3)).</p>
+  <p>To exercise these rights, write to <a href="mailto:hi@birdsongapps.com">hi@birdsongapps.com</a>. You also have the right to lodge a complaint with a supervisory authority. The one responsible for us is the Berliner Beauftragte für Datenschutz und Informationsfreiheit, Alt-Moabit 59–61, 10555 Berlin, <a href="mailto:mailbox@datenschutz-berlin.de">mailbox@datenschutz-berlin.de</a>.</p>
+
+  <h2>Changes</h2>
+  <p>We update this policy when CityLore changes. This version is dated 27 November 2026.</p>
+
+  <hr>
+
+  <h1 id="de" lang="de">Datenschutz</h1>
+  <div lang="de">
+  <p class="lead">Für die CityLore-App auf iPhone und Android, den Web-Editor unter app.citylore.app und diese Website.</p>
+
+  <h2>Verantwortlicher</h2>
+  <p>Birdsong Apps GmbH<br>Wilhelmine-Gemberg-Weg 12<br>10179 Berlin<br>Vertreten durch Sebastian Vogelsang, Geschäftsführer<br>E-Mail: <a href="mailto:hi@birdsongapps.com">hi@birdsongapps.com</a><br>Telefon: +49 152 33925947</p>
+  <p>Einen Datenschutzbeauftragten haben wir nicht benannt; für ein Unternehmen unserer Größe ist das gesetzlich nicht vorgeschrieben.</p>
+
+  <h2>Das Wichtigste in Kürze</h2>
+  <ul>
+    <li>Ihre Touren, Bewertungen und Beiträge liegen in Ihrem eigenen Konto im offenen sozialen Netz (ATProto), auf dem Server, der Ihr Konto führt, nicht bei uns.</li>
+    <li>Ihr Standort bleibt auf Ihrem Handy. Die App nutzt ihn, um Touren in Ihrer Nähe zu zeigen und zu merken, wann Sie eine Station erreichen; an uns schickt sie ihn nicht.</li>
+    <li>Keine Werbung, keine Analyse, kein Tracking, keine Cookies.</li>
+    <li>Wenn Sie eine Tour mit KI entwerfen lassen, gehen Ihr Startpunkt, Ihre Story-Idee und Ihre Auswahl an unseren Server und von dort an Claude von Anthropic. Unser Server vergisst sie eine Stunde, nachdem der Entwurf fertig ist.</li>
+  </ul>
+
+  <h2>Ihr Konto</h2>
+  <p>Sie melden sich mit einem Konto bei Bluesky oder einer anderen ATProto-App an, und zwar bei dem Server, der Ihr Konto führt; Ihr Passwort sehen wir nie. Um diesen Server zu finden und Ihren Namen und Ihr Bild anzuzeigen, fragt die App Ihr Handle und Ihr öffentliches Profil bei Euroskys AppView (api.eurosky.network) ab.</p>
+  <p>Nach der Anmeldung bewahrt die App einen Anmeldeschlüssel auf Ihrem Handy oder in Ihrem Browser auf und liest und schreibt damit Ihre CityLore-Einträge in Ihrem Konto. Im Web bestätigt unser Server unter app.citylore.app außerdem mit einem kurzen Nachweis, dass die Anmeldung wirklich von CityLore kommt. Dieser Nachweis enthält nichts aus Ihrem Konto.</p>
+
+  <h2>Ihre Touren, Bewertungen und Beiträge</h2>
+  <p>Touren, die Sie anlegen, werden in Ihrem Konto gespeichert. Eine private Tour liegt in einem privaten Bereich Ihres Kontos, den nur Sie öffnen können. Eine geteilte Tour können die Personen lesen, die Sie einladen. Eine öffentliche Tour ist im offenen Netz öffentlich: Jeder kann sie finden und laufen, in jeder App, und Kopien, die andere gemacht haben, können bleiben, wenn Sie sie später privat machen oder löschen.</p>
+  <p>Bewertungen, Beiträge und „Ich war hier“-Pins werden nur dann in Ihr Konto geschrieben, wenn Sie das wählen, und sie sind öffentlich, wie Beiträge auf Bluesky. Für Ihr Konto ist der Server verantwortlich, der es führt, und dessen Betreiber; um es zu löschen, nutzen Sie diesen Dienst.</p>
+
+  <h2>Standort</h2>
+  <p>Mit Ihrer Erlaubnis nutzt die App Ihren Standort, um Touren in Ihrer Nähe zu zeigen, Sie durch einen Rundgang zu führen und zu merken, wann Sie an einer Station ankommen. Auf dem iPhone können Sie den Standort auch „Immer“ erlauben: Das Handy achtet dann nur auf Ihre nächsten zwei Stationen, damit die Ankunft auch bei gesperrtem Bildschirm funktioniert. All das passiert auf Ihrem Handy; Ihr Standort wird nicht an uns übertragen.</p>
+  <p>Im Web schickt „Meinen Standort verwenden“ unter „Plan a walk“ Ihren Standort einmal an Euroskys Orte-Dienst, der mit dem Namen der Gegend antwortet. Die Ortssuche im Editor schickt Ihren Suchbegriff und die Kartenmitte an denselben Dienst.</p>
+
+  <h2>Karten</h2>
+  <p>Die Karten kommen von OpenFreeMap (tiles.openfreemap.org), einem freien Kartendienst auf Grundlage von OpenStreetMap. Ihr Handy oder Browser lädt die Kartenkacheln direkt dort, deshalb erhält OpenFreeMap Ihre IP-Adresse und den Kartenausschnitt, den Sie ansehen. Karten, die Sie für die Offline-Nutzung herunterladen, werden auf Ihrem Handy gespeichert.</p>
+
+  <h2>Touren mit KI entwerfen</h2>
+  <p>„Plan a walk“ im Web-Editor schickt Ihren Startpunkt, die Dauer, wo der Rundgang enden soll, den Erzählstil, Ihre Story-Idee, die Spielarten und die Sprache an unseren Server unter app.citylore.app, zusammen mit einem kurzlebigen Token vom Server Ihres Kontos, das uns sagt, welches Konto fragt. Um dieses Token zu prüfen, ruft unser Server den öffentlichen Schlüssel Ihres Kontos im PLC-Verzeichnis (plc.directory) oder auf der eigenen Domain Ihres Kontos ab.</p>
+  <p>Unser Server fragt dann Euroskys Orte-Dienst nach Orten rund um den Start, liest auf Wikipedia und Wikidata über sie nach (diese Anfragen enthalten nichts über Sie) und schickt Ihre Auswahl und Story-Idee, den Startpunkt und die Orte an Claude, ein KI-Modell von Anthropic PBC in den USA, das den Entwurf schreibt. Anthropic verarbeitet dies in unserem Auftrag nach seinen geschäftlichen Bedingungen und seiner Vereinbarung zur Auftragsverarbeitung, die die Übermittlung in die USA auf Grundlage der EU-Standardvertragsklauseln regeln; Anthropic nutzt die Daten nicht zum Trainieren seiner Modelle.</p>
+  <p>Unser Server hält einen Entwurf nur im Arbeitsspeicher, bis eine Stunde nachdem er fertig ist, und vergisst ihn dann. Der Entwurf selbst wird privat in Ihrem Konto gespeichert.</p>
+  <p>Um die kostenlosen Story-Generierungen jedes Kontos zu zählen und die Kosten der Entwürfe in einem Monatsbudget zu halten, schreibt unser Server für jeden Aufruf von Claude und jeden gelieferten Entwurf eine Zeile: die Kennung Ihres Kontos (DID), die Uhrzeit, das Modell, die Menge des verarbeiteten Texts und die Kosten. Diese Zeilen enthalten nichts über die Tour selbst. Wir bewahren sie auf, solange wir sie brauchen, um kostenlose Generierungen zu zählen, und für unsere Buchhaltung.</p>
+  <p>Rechtsgrundlage für all das ist Art. 6 Abs. 1 lit. b DSGVO, die Erbringung des von Ihnen gewünschten Dienstes, und für die Zählung zusätzlich Art. 6 Abs. 1 lit. f DSGVO, unser Interesse daran, kostenloses Entwerfen fair und bezahlbar zu halten.</p>
+
+  <h2>Auf Ihrem Gerät gespeichert</h2>
+  <p>App und Web-Editor speichern auf Ihrem Gerät, was sie zum Funktionieren brauchen: Ihre Anmeldung, heruntergeladene Touren mit ihren gesprochenen Geschichten, Ihren Fortschritt auf einem Rundgang, ungespeicherte Entwürfe im Editor, die Aussagen der KI, die Sie noch prüfen möchten, und Ihre Einstellungen. Das bleibt auf Ihrem Gerät und ist für die Funktionen erforderlich, die Sie nutzen (§ 25 Abs. 2 TDDDG). Geschichten liest Ihr Handy mit seinen eigenen Stimmen vor, auf dem Gerät.</p>
+
+  <h2>Hosting und Server-Logs</h2>
+  <p>app.citylore.app, die Anmeldehilfe und der Entwurfs-Server laufen auf einem Server, den wir bei der Contabo GmbH, Aschauer Straße 32a, 81549 München, mieten, in einem Rechenzentrum in Deutschland, auf Grundlage eines Auftragsverarbeitungsvertrags nach Art. 28 DSGVO. Diese Website, citylore.app, wird über GitHub Pages ausgeliefert, betrieben von GitHub, Inc. in den USA; GitHub erhält Ihre IP-Adresse, wenn Sie sie öffnen.</p>
+  <p>Wenn Sie eine Seite öffnen oder den Entwurfs-Server nutzen, kann der Server den Zugriff protokollieren: Ihre IP-Adresse, Datum und Uhrzeit, was angefragt wurde und ob es geklappt hat. Wir brauchen das, um den Dienst am Laufen und sicher zu halten (Art. 6 Abs. 1 lit. f DSGVO). Wir bewahren diese Logs höchstens 14 Tage auf und nutzen sie nicht, um Sie zu identifizieren.</p>
+
+  <h2>Testversionen</h2>
+  <p>Wenn Sie eine Vorabversion von CityLore über Apples TestFlight oder das Testprogramm von Google Play testen, geben Apple oder Google uns weiter, was ihre Bedingungen erlauben: zum Beispiel Ihren Namen und Ihre E-Mail-Adresse, wenn wir Sie per E-Mail eingeladen haben, Ihr Gerät und dessen Systemversion, Absturzberichte und das Feedback, das Sie schicken. Wir nutzen das nur, um CityLore zu verbessern und Fehler zu beheben.</p>
+
+  <h2>Keine Werbung, kein Tracking</h2>
+  <p>CityLore zeigt keine Werbung, nutzt keine Analyse- oder Tracking-Dienste und setzt keine Cookies. Wir verkaufen Ihre Daten nicht und geben sie niemandem für dessen eigene Zwecke weiter.</p>
+
+  <h2>Ihre Rechte</h2>
+  <p>Sie haben das Recht auf Auskunft über die personenbezogenen Daten, die wir über Sie verarbeiten (Art. 15 DSGVO), auf Berichtigung (Art. 16), Löschung (Art. 17) oder Einschränkung der Verarbeitung (Art. 18), auf Datenübertragbarkeit (Art. 20) und auf Widerspruch gegen eine Verarbeitung, die auf unserem berechtigten Interesse beruht (Art. 21). Beruht eine Verarbeitung auf Ihrer Einwilligung, können Sie diese jederzeit mit Wirkung für die Zukunft widerrufen (Art. 7 Abs. 3).</p>
+  <p>Schreiben Sie dazu an <a href="mailto:hi@birdsongapps.com">hi@birdsongapps.com</a>. Außerdem haben Sie das Recht, sich bei einer Aufsichtsbehörde zu beschweren. Für uns zuständig ist die Berliner Beauftragte für Datenschutz und Informationsfreiheit, Alt-Moabit 59–61, 10555 Berlin, <a href="mailto:mailbox@datenschutz-berlin.de">mailbox@datenschutz-berlin.de</a>.</p>
+
+  <h2>Änderungen</h2>
+  <p>Wir passen diese Erklärung an, wenn sich CityLore ändert. Diese Fassung ist vom 27. November 2026.</p>
+  </div>
+</main>
+<footer>
+  <a href="https://www.birdsongapps.com/">Birdsong Apps GmbH</a> ·
+  <a href="https://www.birdsongapps.com/legal-notice/">Legal notice</a> ·
+  <a href="/privacy/">Privacy</a>
+</footer>
+</body>
+</html>
