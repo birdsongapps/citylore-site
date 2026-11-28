@@ -47,7 +47,7 @@
   <h2>The short version</h2>
   <ul>
     <li>Your tours, ratings and posts live in your own account on the open social web (ATProto), at the server that hosts your account, not with us.</li>
-    <li>Your position stays on your phone. The app uses it to show tours near you and to notice when you reach a stop; it doesn't send it to us.</li>
+    <li>Your exact position stays on your phone. To find tours near you, the app sends it rounded to about a kilometre, and we don't keep it. Arriving at stops is worked out on the phone.</li>
     <li>No advertising, no analytics, no tracking, no cookies.</li>
     <li>When you draft a tour with AI, your start point, your story idea and your choices go to our server and from there to Anthropic's Claude. Our server forgets them an hour after the draft is done.</li>
   </ul>
@@ -61,8 +61,12 @@
   <p>To share a tour, you add people by their handle. The app looks the handle up at Eurosky's AppView and saves the people's account identifiers (DIDs) in your account, as the list of who may open that tour. The invite link you send them contains your account's identifier and the tour's key, nothing else, and opens the tour only for the people you added. When one of them opens it, their account's server asks yours for a short-lived permission, and the tour comes straight from your account's server to their phone; it doesn't pass through us.</p>
   <p>Ratings, posts and "I was here" pins are written to your account only when you choose to, and they are public, like posts on Bluesky. The server that hosts your account, and its operator, are responsible for your account; to delete it, use that service.</p>
 
+  <h2>Finding tours, and counting walks</h2>
+  <p>To show tours near you, our server keeps a copy of the public tours and ratings on the open network: it reads them from the network's public event stream and, to catch up, asks a relay run by Bluesky which accounts have CityLore records and reads those from each account's server. It also keeps the names and pictures of the tours' authors from Eurosky's AppView for a day. A tour you make private or delete leaves this copy within about a minute. When the app looks for tours near you, it sends your position rounded to about a kilometre; our server answers and keeps no record of it.</p>
+  <p>When you start a public tour, and when you reach its end, the app tells our server "started" or "finished" for that tour, never where you are. If you're signed in, it does so under your account's identifier (DID), with the day; we use this to count walks and to give ratings from people who walked a tour more weight. If you're signed out, only the count goes up. Your own tours aren't counted. The legal basis is Article 6(1)(f) GDPR, our interest in showing which tours people actually walk and in fair ratings. You can ask us to delete your walks at the address above.</p>
+
   <h2>Location</h2>
-  <p>With your permission, the phone app uses your position to show tours near you, to guide you along a walk and to notice when you arrive at a stop. On iPhone you can also allow location "Always": the phone then watches only for your next two stops, so arrivals work with the screen locked. All of this happens on your phone; your position is not sent to us.</p>
+  <p>With your permission, the phone app uses your position to show tours near you, to guide you along a walk and to notice when you arrive at a stop. On iPhone you can also allow location "Always": the phone then watches only for your next two stops, so arrivals work with the screen locked. Guiding and arrivals happen on your phone; only the search for tours near you sends your position, rounded to about a kilometre (see "Finding tours, and counting walks").</p>
   <p>On the web, "Use my location" in "Plan a walk" sends your position once to Eurosky's places service, which answers with the name of the area. Searching for places in the editor sends what you type and the middle of the map to the same service.</p>
 
   <h2>Maps</h2>
@@ -111,7 +115,7 @@
   <h2>Das Wichtigste in Kürze</h2>
   <ul>
     <li>Ihre Touren, Bewertungen und Beiträge liegen in Ihrem eigenen Konto im offenen sozialen Netz (ATProto), auf dem Server, der Ihr Konto führt, nicht bei uns.</li>
-    <li>Ihr Standort bleibt auf Ihrem Handy. Die App nutzt ihn, um Touren in Ihrer Nähe zu zeigen und zu merken, wann Sie eine Station erreichen; an uns schickt sie ihn nicht.</li>
+    <li>Ihr genauer Standort bleibt auf Ihrem Handy. Um Touren in Ihrer Nähe zu finden, schickt die App ihn auf etwa einen Kilometer gerundet, und wir speichern ihn nicht. Ob Sie eine Station erreichen, berechnet das Handy selbst.</li>
     <li>Keine Werbung, keine Analyse, kein Tracking, keine Cookies.</li>
     <li>Wenn Sie eine Tour mit KI entwerfen lassen, gehen Ihr Startpunkt, Ihre Story-Idee und Ihre Auswahl an unseren Server und von dort an Claude von Anthropic. Unser Server vergisst sie eine Stunde, nachdem der Entwurf fertig ist.</li>
   </ul>
@@ -125,8 +129,12 @@
   <p>Um eine Tour zu teilen, fügen Sie Personen über ihren Handle hinzu. Die App schlägt den Handle bei Euroskys AppView nach und speichert die Konto-Kennungen (DIDs) dieser Personen in Ihrem Konto, als Liste derer, die die Tour öffnen dürfen. Der Einladungslink, den Sie ihnen schicken, enthält die Kennung Ihres Kontos und den Schlüssel der Tour, sonst nichts, und öffnet die Tour nur für die Personen, die Sie hinzugefügt haben. Öffnet eine von ihnen die Tour, bittet der Server ihres Kontos den Server Ihres Kontos um eine kurzlebige Erlaubnis, und die Tour geht direkt vom Server Ihres Kontos auf ihr Handy; über uns läuft sie nicht.</p>
   <p>Bewertungen, Beiträge und „Ich war hier“-Pins werden nur dann in Ihr Konto geschrieben, wenn Sie das wählen, und sie sind öffentlich, wie Beiträge auf Bluesky. Für Ihr Konto ist der Server verantwortlich, der es führt, und dessen Betreiber; um es zu löschen, nutzen Sie diesen Dienst.</p>
 
+  <h2>Touren finden und Rundgänge zählen</h2>
+  <p>Um Touren in Ihrer Nähe zu zeigen, hält unser Server eine Kopie der öffentlichen Touren und Bewertungen im offenen Netz: Er liest sie aus dem öffentlichen Ereignisstrom des Netzes und fragt zum Aufholen ein Relay von Bluesky, welche Konten CityLore-Einträge haben, und liest diese vom Server des jeweiligen Kontos. Außerdem behält er die Namen und Bilder der Autorinnen und Autoren der Touren von Euroskys AppView einen Tag lang. Eine Tour, die Sie privat machen oder löschen, verschwindet innerhalb etwa einer Minute aus dieser Kopie. Wenn die App Touren in Ihrer Nähe sucht, schickt sie Ihren Standort auf etwa einen Kilometer gerundet; unser Server antwortet und speichert ihn nicht.</p>
+  <p>Wenn Sie eine öffentliche Tour beginnen und wenn Sie ihr Ende erreichen, teilt die App unserem Server „begonnen“ oder „beendet“ für diese Tour mit, nie, wo Sie sind. Sind Sie angemeldet, geschieht das unter der Kennung Ihres Kontos (DID), mit dem Tag; wir nutzen das, um Rundgänge zu zählen und Bewertungen von Menschen, die eine Tour gelaufen sind, mehr Gewicht zu geben. Sind Sie nicht angemeldet, zählt nur die Zahl. Ihre eigenen Touren werden nicht gezählt. Rechtsgrundlage ist Art. 6 Abs. 1 lit. f DSGVO, unser Interesse daran zu zeigen, welche Touren tatsächlich gelaufen werden, und an fairen Bewertungen. Sie können uns unter der Adresse oben bitten, Ihre Rundgänge zu löschen.</p>
+
   <h2>Standort</h2>
-  <p>Mit Ihrer Erlaubnis nutzt die App Ihren Standort, um Touren in Ihrer Nähe zu zeigen, Sie durch einen Rundgang zu führen und zu merken, wann Sie an einer Station ankommen. Auf dem iPhone können Sie den Standort auch „Immer“ erlauben: Das Handy achtet dann nur auf Ihre nächsten zwei Stationen, damit die Ankunft auch bei gesperrtem Bildschirm funktioniert. All das passiert auf Ihrem Handy; Ihr Standort wird nicht an uns übertragen.</p>
+  <p>Mit Ihrer Erlaubnis nutzt die App Ihren Standort, um Touren in Ihrer Nähe zu zeigen, Sie durch einen Rundgang zu führen und zu merken, wann Sie an einer Station ankommen. Auf dem iPhone können Sie den Standort auch „Immer“ erlauben: Das Handy achtet dann nur auf Ihre nächsten zwei Stationen, damit die Ankunft auch bei gesperrtem Bildschirm funktioniert. Führung und Ankunft passieren auf Ihrem Handy; nur die Suche nach Touren in Ihrer Nähe schickt Ihren Standort, auf etwa einen Kilometer gerundet (siehe „Touren finden und Rundgänge zählen“).</p>
   <p>Im Web schickt „Meinen Standort verwenden“ unter „Plan a walk“ Ihren Standort einmal an Euroskys Orte-Dienst, der mit dem Namen der Gegend antwortet. Die Ortssuche im Editor schickt Ihren Suchbegriff und die Kartenmitte an denselben Dienst.</p>
 
   <h2>Karten</h2>

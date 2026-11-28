@@ -3,7 +3,7 @@
   "client_name": "CityLore",
   "client_uri": "https://citylore.app/",
   "redirect_uris": ["app.citylore:/oauth/callback"],
-  "scope": "atproto repo:app.citylore.tour repo:app.citylore.rating repo:social.eurosky.place.pin repo:app.bsky.feed.post?action=create blob:image/* space:app.citylore.privateTours?collection=app.citylore.tour&manage=create space:app.citylore.sharedTour?collection=app.citylore.tour&manage=create&manage=update&manage=delete space:app.citylore.sharedTour?authority=*&action=read",
+  "scope": "atproto repo:app.citylore.tour repo:app.citylore.rating repo:social.eurosky.place.pin repo:app.bsky.feed.post?action=create blob:image/* rpc:*?aud=did:web:app.citylore.app%23citylore_api space:app.citylore.privateTours?collection=app.citylore.tour&manage=create space:app.citylore.sharedTour?collection=app.citylore.tour&manage=create&manage=update&manage=delete space:app.citylore.sharedTour?authority=*&action=read",
   "token_endpoint_auth_method": "none",
   "response_types": ["code"],
   "grant_types": ["authorization_code", "refresh_token"],
