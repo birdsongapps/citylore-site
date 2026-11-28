@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI in CityLore</title>
+<meta name="description" content="How CityLore marks text an AI wrote, and how anyone can check it.">
+<style>
+  :root { color-scheme: dark; }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: #0F0F13; color: #F5F3EF;
+    font: 17px/1.6 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    padding: 48px 24px 32px;
+  }
+  main { max-width: 680px; margin: 0 auto; width: 100%; }
+  .mark { font-weight: 800; font-size: 28px; letter-spacing: -0.5px; margin: 0 0 40px; }
+  .mark a { color: inherit; text-decoration: none; }
+  .dot { display: inline-block; width: 9px; height: 9px; border-radius: 50%; background: #FF8A3D; margin-left: 4px; }
+  h1 { font-size: clamp(32px, 7vw, 44px); line-height: 1.08; letter-spacing: -1px; margin: 0 0 16px; }
+  h2 { font-size: 21px; line-height: 1.3; margin: 36px 0 10px; }
+  p, li { color: #D9D7E0; }
+  p { margin: 0 0 14px; }
+  ul, ol { margin: 0 0 14px; padding-left: 22px; }
+  li { margin: 0 0 6px; }
+  code { font: 14px/1.5 ui-monospace, SFMono-Regular, Menlo, monospace; color: #F5F3EF; overflow-wrap: anywhere; }
+  pre { background: #1A1A22; border: 1px solid #34343F; border-radius: 12px; padding: 14px 16px; overflow-x: auto; margin: 0 0 14px; }
+  pre code { overflow-wrap: normal; }
+  .lead { color: #A9A7B3; }
+  hr { border: 0; border-top: 1px solid #34343F; margin: 56px 0; }
+  footer { max-width: 680px; margin: 48px auto 0; width: 100%; font-size: 14px; color: #A9A7B3; }
+  a { color: #C9C0FF; }
+  a:hover { color: #FFFFFF; }
+</style>
+</head>
+<body>
+<main>
+  <p class="mark"><a href="/">citylore<span class="dot" aria-hidden="true"></span></a></p>
+
+  <h1>AI in CityLore</h1>
+  <p class="lead">How CityLore marks text an AI wrote, and how anyone can check it. <a href="#de">Deutsche Fassung weiter unten.</a></p>
+
+  <h2>Where an AI writes</h2>
+  <p>In the web editor at app.citylore.app, creators can have an AI draft a whole tour, or write one stop again. The AI is Claude, by Anthropic. The creator reads and edits everything before anyone else sees it. A tour stays private until its creator shares it with people they invite or makes it public.</p>
+
+  <h2>How AI text is marked</h2>
+  <ul>
+    <li><strong>A watermark in the text.</strong> Claude puts an invisible watermark into the text it writes. It travels with the text when it's copied, and can fade when the text is heavily edited. <a href="https://support.claude.com/en/articles/16266773-how-claude-marks-ai-generated-content">Anthropic explains it.</a></li>
+    <li><strong>A signed note in the tour.</strong> Each AI draft and each rewritten stop adds a note to the tour, signed by CityLore's server. The note lists a fingerprint of every text the AI wrote, the model, the time, and the account it was written for.</li>
+    <li><strong>A plain flag.</strong> Every tour says whether an AI drafted any part of it, with which model and when.</li>
+    <li><strong>The creator's fact check.</strong> Before a tour with AI-written text goes public, its creator confirms they checked its facts and answers for what it says. They confirm again when new AI text goes into a public tour.</li>
+  </ul>
+  <p>The EU's AI Act asks services that generate text to mark it in a way software can read (Article 50). The tour pages show no AI badge: the creator decides what a tour says, and answers for it.</p>
+
+  <h2>Checking a note</h2>
+  <p>Tours are records of the type <code>app.citylore.tour</code> on the open social web (ATProto). Their notes are in <code>provenance.notes</code>. Each note has:</p>
+  <ul>
+    <li><code>texts</code>: for each text the AI wrote, where it is (<code>stop</code>, the stop's id, absent for the tour's title and summary; <code>field</code>, such as <code>story</code> or <code>clue.riddle</code>) and <code>sha256</code>, the SHA-256 of the text as written (UTF-8), base64url without padding;</li>
+    <li><code>model</code>, <code>writtenAt</code> and <code>account</code>;</li>
+    <li><code>key</code>: <code>did:web:app.citylore.app#ai_notes</code>. Its public key is in <a href="https://app.citylore.app/.well-known/did.json">our DID document</a>: P-256, <code>zDnaey4eK7fsrg29HP4AsuXyJougW8YMxHTwctPcNPsuMpy2U</code>;</li>
+    <li><code>sig</code>: the signature, base64url without padding.</li>
+  </ul>
+  <p>The signature covers the UTF-8 bytes of the JSON array <code>["citylore-ai-note/1", key, account, model, writtenAt, [[stop or "", field, sha256], …]]</code>, with the note's own values in that order. It is ECDSA P-256 over SHA-256, 64 bytes (r and s, low-S), as ATProto signs. In JavaScript, with <a href="https://www.npmjs.com/package/@atproto/crypto">@atproto/crypto</a>:</p>
+<pre><code>import { verifySignature } from "@atproto/crypto";
+
+const PUBLIC_KEY = "did:key:zDnaey4eK7fsrg29HP4AsuXyJougW8YMxHTwctPcNPsuMpy2U";
+
+async function checkNote(note) {
+  const { sig, ...rest } = note;
+  const signed = ["citylore-ai-note/1", rest.key, rest.account, rest.model, rest.writtenAt,
+    rest.texts.map((t) => [t.stop ?? "", t.field, t.sha256])];
+  const bytes = new TextEncoder().encode(JSON.stringify(signed));
+  return verifySignature(PUBLIC_KEY, bytes, Buffer.from(sig, "base64url"));
+}
+
+async function fingerprint(text) {
+  const hash = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(text));
+  return Buffer.from(hash).toString("base64url");
+}</code></pre>
+  <p>Then compare each text's <code>sha256</code> with the fingerprint of the text the tour has now. A match means the text is exactly as the AI wrote it. No match means someone changed it since, but an AI wrote it first.</p>
+
+  <h2>What a check can't tell</h2>
+  <ul>
+    <li>A tour without a note may still contain AI text, written elsewhere and pasted in.</li>
+    <li>A watermark is a signal, not proof: very short or heavily edited text may not carry one.</li>
+    <li>A note shows that an AI wrote a text, not that the text is right. The creator's fact check is what stands behind it.</li>
+  </ul>
+  <p>Questions: <a href="mailto:hi@birdsongapps.com">hi@birdsongapps.com</a>.</p>
+
+  <hr>
+
+  <h1 id="de" lang="de">KI in CityLore</h1>
+  <div lang="de">
+  <p class="lead">Wie CityLore Text kennzeichnet, den eine KI geschrieben hat, und wie alle das prüfen können.</p>
+
+  <h2>Wo eine KI schreibt</h2>
+  <p>Im Web-Editor auf app.citylore.app können Autorinnen und Autoren eine ganze Tour von einer KI entwerfen oder eine Station neu schreiben lassen. Die KI ist Claude von Anthropic. Die Autorin oder der Autor liest und bearbeitet alles, bevor jemand anderes es sieht. Eine Tour bleibt privat, bis sie mit eingeladenen Personen geteilt oder veröffentlicht wird.</p>
+
+  <h2>Wie KI-Text gekennzeichnet ist</h2>
+  <ul>
+    <li><strong>Ein Wasserzeichen im Text.</strong> Claude setzt ein unsichtbares Wasserzeichen in den Text, den es schreibt. Es geht beim Kopieren mit und kann verblassen, wenn der Text stark bearbeitet wird. <a href="https://support.claude.com/en/articles/16266773-how-claude-marks-ai-generated-content">Anthropic erklärt es (englisch).</a></li>
+    <li><strong>Eine signierte Notiz in der Tour.</strong> Jeder KI-Entwurf und jede neu geschriebene Station fügt der Tour eine Notiz hinzu, die der Server von CityLore signiert. Die Notiz nennt einen Fingerabdruck jedes Texts, den die KI geschrieben hat, das Modell, die Uhrzeit und das Konto, für das er geschrieben wurde.</li>
+    <li><strong>Ein einfaches Kennzeichen.</strong> Jede Tour sagt, ob eine KI einen Teil davon entworfen hat, mit welchem Modell und wann.</li>
+    <li><strong>Die Faktenprüfung.</strong> Bevor eine Tour mit KI-geschriebenem Text öffentlich wird, bestätigt die Autorin oder der Autor, die Fakten geprüft zu haben und für den Inhalt einzustehen. Kommt neuer KI-Text in eine öffentliche Tour, bestätigen sie es erneut.</li>
+  </ul>
+  <p>Die KI-Verordnung der EU verlangt von Diensten, die Text erzeugen, ihn so zu kennzeichnen, dass Software es lesen kann (Artikel 50). Die Tourseiten zeigen kein KI-Abzeichen: Was eine Tour sagt, entscheidet ihre Autorin oder ihr Autor und steht dafür ein.</p>
+
+  <h2>Eine Notiz prüfen</h2>
+  <p>Touren sind Einträge vom Typ <code>app.citylore.tour</code> im offenen sozialen Netz (ATProto). Ihre Notizen stehen in <code>provenance.notes</code>. Jede Notiz hat:</p>
+  <ul>
+    <li><code>texts</code>: für jeden Text, den die KI geschrieben hat, wo er steht (<code>stop</code>, die Kennung der Station, fehlt bei Titel und Zusammenfassung der Tour; <code>field</code>, etwa <code>story</code> oder <code>clue.riddle</code>) und <code>sha256</code>, den SHA-256 des Texts wie geschrieben (UTF-8), base64url ohne Auffüllung;</li>
+    <li><code>model</code>, <code>writtenAt</code> und <code>account</code>;</li>
+    <li><code>key</code>: <code>did:web:app.citylore.app#ai_notes</code>. Sein öffentlicher Schlüssel steht in <a href="https://app.citylore.app/.well-known/did.json">unserem DID-Dokument</a>: P-256, <code>zDnaey4eK7fsrg29HP4AsuXyJougW8YMxHTwctPcNPsuMpy2U</code>;</li>
+    <li><code>sig</code>: die Signatur, base64url ohne Auffüllung.</li>
+  </ul>
+  <p>Die Signatur gilt für die UTF-8-Bytes des JSON-Arrays <code>["citylore-ai-note/1", key, account, model, writtenAt, [[stop oder "", field, sha256], …]]</code> mit den Werten der Notiz in dieser Reihenfolge. Sie ist ECDSA P-256 über SHA-256, 64 Bytes (r und s, low-S), wie ATProto signiert. Ein Beispiel in JavaScript steht oben in der englischen Fassung.</p>
+  <p>Danach den <code>sha256</code> jedes Texts mit dem Fingerabdruck des Texts vergleichen, den die Tour jetzt hat. Stimmen sie überein, steht der Text genau so da, wie die KI ihn geschrieben hat. Stimmen sie nicht überein, hat ihn seitdem jemand geändert, aber zuerst hat ihn eine KI geschrieben.</p>
+
+  <h2>Was eine Prüfung nicht sagen kann</h2>
+  <ul>
+    <li>Eine Tour ohne Notiz kann trotzdem KI-Text enthalten, der anderswo geschrieben und eingefügt wurde.</li>
+    <li>Ein Wasserzeichen ist ein Hinweis, kein Beweis: Sehr kurzer oder stark bearbeiteter Text trägt es vielleicht nicht.</li>
+    <li>Eine Notiz zeigt, dass eine KI einen Text geschrieben hat, nicht, dass er stimmt. Dafür steht die Faktenprüfung der Autorin oder des Autors.</li>
+  </ul>
+  <p>Fragen: <a href="mailto:hi@birdsongapps.com">hi@birdsongapps.com</a>.</p>
+  </div>
+</main>
+<footer>
+  <a href="https://www.birdsongapps.com/">Birdsong Apps GmbH</a> ·
+  <a href="https://www.birdsongapps.com/legal-notice/">Legal notice</a> ·
+  <a href="/privacy/">Privacy</a> ·
+  <a href="/ai/">AI</a>
+</footer>
+</body>
+</html>
